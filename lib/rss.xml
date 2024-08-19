@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Documentation]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib/media/favicon.png</url><title>Documentation</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Mon, 19 Aug 2024 22:05:03 GMT</lastBuildDate><atom:link href="lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Mon, 19 Aug 2024 22:04:56 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[Apprunner Configurations production and staging]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>Go to <a data-tooltip-position="top" aria-label="https://aws.amazon.com/console/" rel="noopener" class="external-link" href="https://aws.amazon.com/console/" target="_blank">AWS Management Console</a>.
+<br>Navigate to AppRunner from the AWS Console.
+<br><br>
+<br>Under Source and Deployment, select Container Registry as the source type.
+<br>For more details, refer to the <a data-tooltip-position="top" aria-label="https://docs.aws.amazon.com/apprunner/latest/dg/manage-source.html" rel="noopener" class="external-link" href="https://docs.aws.amazon.com/apprunner/latest/dg/manage-source.html" target="_blank">AWS AppRunner Documentation on Source and Deployment</a>
+<br><br><br><br><br><br><br><br><br>![[Pasted image 20240819124833.png]]
+Copiar<br>]]></description><link>developer-documentation/deployment/apprunner/apprunner-configurations-production-and-staging.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Apprunner/Apprunner Configurations production and staging.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Create an RDS Database Instance]]></title><description><![CDATA[ 
+ <br>Start by navigating to the Amazon RDS service in the AWS Management Console to create a new database instance.<br>
+<br>Navigate to RDS:
+
+<br>Open the AWS Management Console.
+<br>Search for and select "RDS" from the services list.
+
+
+<br>Create a New Database:
+
+<br>Click on "Create database."
+<br>Choose "Standard create."
+
+
+<br>Select Database Engine:
+
+<br>Choose "PostgreSQL" as the database engine.
+<br>Select version "14.6 R1" as the engine version.
+
+
+<br>Template Selection:
+
+<br>For Production:
+
+<br>Choose the "Production" template.
+
+
+<br>For Staging:
+
+<br>You may also choose "Production" or another appropriate template based on your staging environment needs.
+
+
+
+
+<br>Availability Configuration:
+
+<br>Set availability to "Single DB Instance."
+
+
+<br>Database Settings:
+
+<br>Provide a name for your database.
+<br>For the password, select "Autogenerate a password" or manually set a strong password.
+
+
+<br>Instance Configuration:
+
+<br>Choose instance class "Burstable classes (db.t3.micro)" which includes:
+
+<br>2 vCPUs
+<br>1 GiB RAM
+<br>Network: 2085 Mbps
+
+
+
+
+<br>Storage Configuration:
+
+<br>Adjust storage settings as per your requirements (typically, leave the default settings unless specific needs dictate otherwise).
+<br>Enalbed storage autoscaling<br>
+<img alt="Pasted image 20240819143222.png" src="lib/media/pasted-image-20240819143222.png">
+
+
+<br>Networking Configuration:
+
+<br>Make sure to follow exact same networking config as shown below<br>
+<img alt="Pasted image 20240819143321.png" src="lib/media/pasted-image-20240819143321.png"><br>
+<img alt="Pasted image 20240819143332.png" src="lib/media/pasted-image-20240819143332.png">
+
+
+<br>Database Authentication:
+
+<br>Choose "Password authentication."
+
+
+<br>Backup Settings:
+
+<br>Ensure that the "Enable automated backups" option is checked.
+
+
+<br>Final Review:
+
+<br>Leave all other settings as default unless specific changes are required.
+<br>Review your settings and click "Create database" to launch the RDS instance.
+
+
+]]></description><link>developer-documentation/deployment/data-base/amazon-relational-database-service/create-an-rds-database-instance.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/Amazon Relational Database Service/Create an RDS Database Instance.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate><enclosure url="lib/media/pasted-image-20240819143222.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240819143222.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Import and Export Databases Between RDS Instances]]></title><description><![CDATA[ 
+ <br>Once your RDS instances are set up, you may need to import or export databases between your production and staging environments.<br>
+<br>Connect to RDS:
+
+<br>Use a database management tool like pgAdmin or TablePlus.
+<br>Connect to your RDS server using the endpoint provided in the RDS console.
+
+
+<br>Export Database:
+
+<br>From Production or Staging:
+
+<br>Right-click on the database (e.g., staging-db or prod-db).
+<br>Select "Backup."
+<br>Name the backup file (e.g., prod.sql) and save it locally.
+
+
+
+
+<br>Import Database:
+
+<br>To Production or Staging:
+
+<br>Go to your newly created database instance.
+<br>Right-click on the database.
+<br>Select "Restore."
+<br>Upload the previously saved prod.sql file to start the restoration process.
+
+
+
+
+<br>Verify Database Replication:
+
+<br>After the restore process, your production and staging databases should be replicas of each other.
+
+
+]]></description><link>developer-documentation/deployment/data-base/amazon-relational-database-service/import-and-export-databases-between-rds-instances.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/Amazon Relational Database Service/Import and Export Databases Between RDS Instances.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Redeploy Application Service]]></title><description><![CDATA[ 
+ <br>After successfully importing the database:<br>
+<br>Go to AWS App Runner:
+
+<br>Navigate to the AWS App Runner service in the console.
+
+
+<br>Deploy the Service:
+
+<br>For Production:
+
+<br>Select the production service (e.g., fm-prod).
+<br>Click the "Deploy" button.
+
+
+<br>For Staging:
+
+<br>Select the staging service (e.g., fm-staging).
+<br>Click the "Deploy" button.
+
+
+
+
+<br>Verify Deployment:
+
+<br>Check the application logs and perform a smoke test to confirm that the deployment was successful.
+
+
+]]></description><link>developer-documentation/deployment/data-base/amazon-relational-database-service/redeploy-application-service.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/Amazon Relational Database Service/Redeploy Application Service.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[DB update Automation]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>ssh into our EC2 instance named testing jumpbox and run this:&nbsp;
+
+<br>Copy code sudo systemctl status amazon-ssm-agent&nbsp;
+<br>The above command confirms status of our SSM service&nbsp;
+<br>If it is not installed, you can install it using the package manager for your OS.&nbsp;
+
+
+<br><br>
+<br>Create an IAM role with the AmazonEC2RoleforSSM managed policy and attach it to your EC2 instance.&nbsp;&nbsp;
+<br>This role is already created and can checked in Roles inside AWS Console&nbsp;
+<br><br>
+<br>Create a script on your EC2 instance that will run the required commands (npx prisma db push). For example, create a file /home/ec2-user/update_db.sh with the following content:&nbsp;
+
+<br>update_db.sh is already been created and will be placed with this document. It contains all the information like .env variables, also pulls latest db updates and run npx prisma db push to update our db&nbsp;
+<br>Ensure the script is executable:
+<br>chmod +x /home/ec2-user/update_db.sh&nbsp;
+
+
+<br><br>
+<br>Created a GitHub Actions workflow that uses the SSM Run Command to execute update_db.sh&nbsp;script on the EC2 instance.(This script is already created and db automation folder.)
+]]></description><link>developer-documentation/deployment/data-base/db-update-automation.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/DB update Automation.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[RDS Configuration Guide (Production and Staging)]]></title><description><![CDATA[ 
+ <br>This guide provides detailed instructions for configuring Amazon RDS for both production and staging environments, as well as steps for importing and exporting databases between these environments.<br><br><br>]]></description><link>developer-documentation/deployment/data-base/rds-configuration-guide-(production-and-staging).html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/RDS Configuration Guide (Production and Staging).md</guid><pubDate>Mon, 19 Aug 2024 21:47:49 GMT</pubDate></item><item><title><![CDATA[Update Database via SSM]]></title><description><![CDATA[ 
+ <br>name: Update Database via SSM<br>
+on:<br>
+push:<br>
+branches:<br>
+- staging  # Trigger the workflow when pushing to staging branch<br>
+jobs:<br>
+update-database:<br>
+runs-on: ubuntu-latest<br>
+steps:<br>
+- name: Checkout repository<br>
+uses: actions/checkout@v2<br>
+- name: Update Database Using SSM Run Command<br>
+env:<br>
+AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_SID }}<br>
+AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_SID }}<br>
+AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}<br>
+run: |<br>			aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --targets Key=instanceIds,Values=i-04e8455a188ebbd7a \
+            --parameters commands='["/home/ubuntu/update_db.sh"]' \
+            --region ${{ secrets.AWS_REGION }}
+Copiar]]></description><link>developer-documentation/deployment/data-base/update-database-via-ssm.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Data Base/Update Database via SSM.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[GEM-System Setup and Deployment Guide (Production and Staging)]]></title><description><![CDATA[ 
+ <br>This guide provides step-by-step instructions for setting up and deploying the GEM-System project locally, and then pushing the Docker image to either the production or staging environments on AWS.<br><br>Start by cloning the GEM-System repository from GitHub to your local machine:<br>
+<br>Navigate to the <a data-tooltip-position="top" aria-label="https://github.com/Fundminer/GEM-system" rel="noopener" class="external-link" href="https://github.com/Fundminer/GEM-system" target="_blank">GEM-System GitHub repository</a>.
+<br>Clone the repository locally using the following command:
+<br>git clone https://github.com/Fundminer/GEM-system.git
+Copiar<br><br>To work on the latest codebase, create a new branch from the main branch:<br>
+<br>Create a new branch based on main:
+<br>git checkout -b your-feature-branch
+Copiar<br>
+<br>Ensure your branch is up-to-date with the latest changes:
+<br>git pull origin main`
+Copiar<br><br>Create a .env file in the root directory of your project with the following environment variables. These variables are crucial for configuring your application, authentication, and integration services. Adjust the variables as needed for either production or staging environments.<br>DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_password
+SMTP_HOST=smtp.yourprovider.com
+AWS_ACCESS_KEY_ID=your_aws_access_key_id
+AWS_ACCESS_KEY_SECRET=your_aws_secret_access_key
+S3_BUCKET_NAME=your_s3_bucket_name
+AZURE_AD_CLIENT_ID=your_azure_ad_client_id
+AZURE_AD_CLIENT_SECRET=your_azure_ad_client_secret
+AZURE_AD_TENANT_ID=your_azure_ad_tenant_id
+Copiar<br><br>Use Prisma to push the database schema to your PostgreSQL database. This command will update your database to match the Prisma schema:<br>
+For more information: see the <a data-tooltip-position="top" aria-label="https://www.prisma.io/docs/orm/prisma-migrate/workflows/prototyping-your-schema" rel="noopener" class="external-link" href="https://www.prisma.io/docs/orm/prisma-migrate/workflows/prototyping-your-schema" target="_blank">Prisma DB Push documentation</a><br>npx prisma db push
+Copiar<br>
+⚠️ WARNING: currently we use a <a data-tooltip-position="top" aria-label="DB update Automation" data-href="DB update Automation" href="developer-documentation/deployment/data-base/db-update-automation.html" class="internal-link" target="_self" rel="noopener">DB Process Automation</a> 
+<br><br>Install all the necessary dependencies for the project using Yarn:<br>yarn install
+Copiar<br><br>To authenticate with AWS and allow Docker to push images to the Amazon Elastic Container Registry (ECR), use the following general command format. Replace the &lt;aws-region&gt; and &lt;ecr-repo-url&gt; placeholders with the appropriate values for your environment.<br>aws ecr get-login-password --region &lt;aws-region&gt; | docker login --username AWS --password-stdin &lt;ecr-repo-url&gt;
+Copiar<br><br>
+<br>Region: us-east-2
+<br>ECR Repository URL: 054597337237.dkr.ecr.us-east-2.amazonaws.com
+<br><br>
+<br>Region: us-east-2
+<br>ECR Repository URL: 054597337237.dkr.ecr.us-east-2.amazonaws.com<br>
+<a data-tooltip-position="top" aria-label="https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login-password.html" rel="noopener" class="external-link" href="https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login-password.html" target="_blank">AWS CLI ECR get-login-password Command</a>
+<br><br>Build a Docker image for your application. The image name should be adjusted according to the environment (production or staging):<br>
+<br>For Production<br>
+docker build -t fundminer-production .
+<br>For Staging<br>
+docker build -t fundminer-private .
+<br><br>Tag the Docker image so it can be pushed to the appropriate AWS ECR repository. Use the following commands:<br>
+For Production:<br>docker tag fundminer-production:latest 054597337237.dkr.ecr.us-east-2.amazonaws.com/fundminer-production:latest
+Copiar<br>For Staging:<br>docker tag fundminer-private:latest 054597337237.dkr.ecr.us-east-2.amazonaws.com/fundminer-private:latest`
+Copiar<br><br>Push the Docker image to the AWS ECR repository using the following commands:<br>
+For Production:<br>docker push 054597337237.dkr.ecr.us-east-2.amazonaws.com/fundminer-production:latest
+Copiar<br>For Staging:<br>docker push 054597337237.dkr.ecr.us-east-2.amazonaws.com/fundminer-private:latest
+Copiar<br>Review the <a data-tooltip-position="top" aria-label="https://docs.docker.com/reference/cli/docker/image/push/" rel="noopener" class="external-link" href="https://docs.docker.com/reference/cli/docker/image/push/" target="_blank">Docker Push documentation</a> for more details.<br><br>It's important to confirm that the Docker image has been successfully pushed to the appropriate repository. You can verify this by checking the timestamp of the image in the repository via the AWS Management Console or CLI.<br><br>Once the image is pushed, deploy it to the appropriate App Runner service:<br>
+<br>For Production:
+
+<br>Navigate to fm-prod in AWS App Runner.
+
+
+<br>For Staging:<br>
+- Navigate to fm-staging in AWS App Runner.<br>
+Click the "Deploy" button for the respective service.<br>
+Refer to the <a data-tooltip-position="top" aria-label="https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html" rel="noopener" class="external-link" href="https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html" target="_blank">AWS App Runner Documentation</a> for more information.
+]]></description><link>developer-documentation/deployment/docker/gem-system-setup-and-deployment-guide-(production-and-staging).html</link><guid isPermaLink="false">Developer Documentation/Deployment/Docker/GEM-System Setup and Deployment Guide (Production and Staging).md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Retagging Older Docker Images for Rollback]]></title><description><![CDATA[ 
+ <br>This guide explains how to retag an older Docker image in Amazon ECR (Elastic Container Registry) for the purpose of rolling back to a previous version. This can be useful if you need to revert to a known good state in your deployment.<br><br>First, you need to pull the existing image from your Amazon ECR repository. This image is identified by its tag or digest (a unique identifier based on the image's content).<br>
+Command:<br>docker pull &lt;your-ecr-repository-uri&gt;:&lt;source-tag&gt;
+Copiar<br>Explanation:<br>
+<br>&lt;your-ecr-repository-uri&gt;: The URI of your ECR repository.
+<br>&lt;source-tag&gt;: The tag or digest of the image you want to pull. In the example, the image is identified by its SHA256 digest.<br>
+References:
+<br><a data-tooltip-position="top" aria-label="https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-pull-ecr-image.html" rel="noopener" class="external-link" href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-pull-ecr-image.html" target="_blank">Amazon ECR Pulling an Image</a>
+<br><br>After pulling the image, the next step is to retag it. Retagging allows you to create a new tag for the same image, which can then be pushed back to the repository under this new tag.<br>
+Command:<br>docker tag &lt;your-ecr-repository-uri&gt;:&lt;source-tag&gt; &lt;your-ecr-repository-uri&gt;:&lt;new-tag&gt;
+Copiar<br>Explanation:<br>
+<br>&lt;new-tag&gt;: The new tag you want to assign to the image. In the example, latest is used as the new tag, which is commonly used to signify the most recent or preferred version of an image.<br>
+References:
+<br><a data-tooltip-position="top" aria-label="https://docs.docker.com/reference/cli/docker/image/tag/" rel="noopener" class="external-link" href="https://docs.docker.com/reference/cli/docker/image/tag/" target="_blank">Docker Tag</a>
+<br><br>Finally, push the retagged image back to the Amazon ECR repository. This makes the image available under the new tag you assigned.<br>docker push &lt;your-ecr-repository-uri&gt;:&lt;new-tag&gt;
+Copiar<br>Explanation:<br>
+<br>Pushing the image with the new tag effectively updates the repository to include this version. If latest is used, this image will now be the default image pulled when no specific tag is provided.<br>
+References:
+<br><a data-tooltip-position="top" aria-label="https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html" rel="noopener" class="external-link" href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html" target="_blank">Amazon ECR Pushing an Image</a>
+]]></description><link>developer-documentation/deployment/docker/retagging-older-docker-images-for-rollback.html</link><guid isPermaLink="false">Developer Documentation/Deployment/Docker/Retagging Older Docker Images for Rollback.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Branch Naming Best Practices]]></title><description><![CDATA[ 
+ <br><br>
+<br>Format:
+
+<br>feature/description
+<br>bugfix/description
+<br>hotfix/description
+<br>chore/description
+
+
+<br>Description: The branch name should clearly describe the task you are working on. This helps other developers quickly understand the purpose of the branch without needing to dive into the code or task details.
+<br>Examples:
+
+<br>feature/new-report-functionality
+<br>bugfix/fix-login-error
+<br>hotfix/urgent-crash-fix
+<br>chore/update-dependencies
+<br>feature/fme-1182-add-user-profile
+
+
+<br>Additional Tip: When naming a feature branch, consider including the main function or module it affects, such as feature/user-authentication-upgrade or feature/dashboard-improvements.
+<br><br>
+<br>Stick to a Naming Convention: Maintain uniformity by adhering to the same naming convention across the entire project or organization. This consistency helps avoid confusion and ensures that all team members are on the same page.
+<br>Examples:
+
+<br>If you start using feature/ for new functionalities, make sure every new functionality branch starts with feature/.
+<br>Similarly, ensure that bug fixes always start with bugfix/.
+
+
+<br>Additional Tip: Consistency is key in large projects with multiple contributors. It can help with automating processes, such as CI/CD pipelines that depend on branch names.
+<br><br>
+<br>Use of Ticket Numbers: When applicable, include the ticket or issue number from your project management tool in the branch name. This practice makes it easier to trace back the branch to its corresponding task or bug report.
+<br>Examples:
+
+<br>feature/fme-1182-add-user-profile
+<br>bugfix/abc-231-fix-null-pointer-exception
+<br>chore/jira-345-update-readme
+
+
+<br>Additional Tip: Including ticket numbers can be especially useful when reviewing commits or pull requests, as it allows team members to quickly access the related task details.
+<br><br>
+<br>Preferred Separator: Use hyphens (-) rather than underscores (_) in branch names. Hyphens are generally easier to read and avoid potential issues with certain tools or scripts.
+<br>Examples:
+
+<br>feature/new-feature (preferred) vs. feature/new_feature (avoid)
+<br>bugfix/fix-crash-on-load vs. bugfix/fix_crash_on_load
+
+
+<br>Additional Tip: Hyphens are commonly used in URLs and command-line interfaces, making them more versatile and less prone to errors across different systems.
+<br><br>
+<br>Allowed Characters: Stick to alphanumeric characters and hyphens. Avoid using special characters (e.g., @, !, %, etc.) and spaces in branch names, as these can cause issues with version control systems and other tools.
+<br>Examples:
+
+<br>feature/new-user-onboarding (good) vs. feature/new user onboarding (avoid)
+<br>hotfix/critical-fix vs. hotfix/critical_fix!
+
+
+<br>Additional Tip: Keeping branch names simple and free of special characters ensures compatibility across different systems, scripts, and tools used in the development process.
+]]></description><link>developer-documentation/version-control-standards/branches/branch-naming-best-practices.html</link><guid isPermaLink="false">Developer Documentation/Version Control Standards/Branches/Branch Naming Best Practices.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Commit Message Best Practices]]></title><description><![CDATA[ 
+ <br><br>
+<br>Format: Follow the format: [type]: description where the description can be the title of the ticket or a brief summary of the change.
+<br>Types: Use the following types to categorize your commits:
+
+<br>feat: For new features.
+
+<br>Example:<br>
+feat: Add user authentication
+
+
+<br>fix: For bug fixes.
+
+<br>Example:<br>
+fix: Correct typo in user profile page
+
+
+<br>docs: For documentation updates.
+
+<br>Example:<br>
+docs: Update API usage examples in README
+
+
+<br>style: For code style changes (formatting, missing semicolons, etc.) that do not affect the functionality.
+
+<br>Example:<br>
+style: Reformat code to match style guide
+
+
+<br>refactor: For code changes that neither fix a bug nor add a feature, but improve code structure or readability.
+
+<br>Example:<br>
+refactor: Simplify user input validation logic
+
+
+<br>test: For adding or updating tests.
+
+<br>Example:<br>
+test: Add unit tests for user authentication
+
+
+<br>chore: For maintenance tasks, such as updating dependencies or configuring build tools.
+
+<br>Example:<br>
+chore: Update npm packages to latest versions
+
+
+
+
+<br>Additional Tips:
+
+<br>Ensure your description is specific and concise. It should provide enough context for someone reviewing the commit history to understand the purpose of the change.
+<br>If your project management tool assigns ticket numbers, consider including the ticket number in the description.<br>
+feat: Add user login functionality (JIRA-123).
+
+
+<br><br>
+<br>Description: Write commit messages in the imperative mood, as if you are commanding the codebase to do something. This approach is widely recommended because it aligns with the way commands are issued to version control systems (e.g., "Git: Apply this change").
+<br>Example:
+
+<br>Correct: Add user login functionality
+<br>Incorrect: Added user login functionality
+
+
+<br>Additional Tip: The imperative mood keeps commit messages consistent and actionable. This format is also easier to read in the context of a series of commits, as it reflects the intent behind each change.
+<br>
+]]></description><link>developer-documentation/version-control-standards/commits/commit-message-best-practices.html</link><guid isPermaLink="false">Developer Documentation/Version Control Standards/Commits/Commit Message Best Practices.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Version Control Standars]]></title><description><![CDATA[ 
+ <br><br>
+<br><a data-href="Branch Naming Best Practices" href="developer-documentation/version-control-standards/branches/branch-naming-best-practices.html" class="internal-link" target="_self" rel="noopener">Branch Naming Best Practices</a>
+<br><br>
+<br><a data-href="Commit Message Best Practices" href="developer-documentation/version-control-standards/commits/commit-message-best-practices.html" class="internal-link" target="_self" rel="noopener">Commit Message Best Practices</a>
+]]></description><link>developer-documentation/version-control-standards/version-control-standars.html</link><guid isPermaLink="false">Developer Documentation/Version Control Standards/Version Control Standars.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item><item><title><![CDATA[Development Documentation]]></title><description><![CDATA[ 
+ <br><br><a data-href="GEM-System Setup and Deployment Guide (Production and Staging)" href="developer-documentation/deployment/docker/gem-system-setup-and-deployment-guide-(production-and-staging).html" class="internal-link" target="_self" rel="noopener">GEM-System Setup and Deployment Guide (Production and Staging)</a><br>
+<a data-href="Retagging Older Docker Images for Rollback" href="developer-documentation/deployment/docker/retagging-older-docker-images-for-rollback.html" class="internal-link" target="_self" rel="noopener">Retagging Older Docker Images for Rollback</a><br><br><a data-href="DB update Automation" href="developer-documentation/deployment/data-base/db-update-automation.html" class="internal-link" target="_self" rel="noopener">DB update Automation</a><br>
+<a data-href="RDS Configuration Guide (Production and Staging)" href="developer-documentation/deployment/data-base/rds-configuration-guide-(production-and-staging).html" class="internal-link" target="_self" rel="noopener">RDS Configuration Guide (Production and Staging)</a><br>
+<a data-href="Update Database via SSM" href="developer-documentation/deployment/data-base/update-database-via-ssm.html" class="internal-link" target="_self" rel="noopener">Update Database via SSM</a><br><br><a data-href="Apprunner Configurations production and staging" href="developer-documentation/deployment/apprunner/apprunner-configurations-production-and-staging.html" class="internal-link" target="_self" rel="noopener">Apprunner Configurations production and staging</a>]]></description><link>developer-documentation/development-documentation.html</link><guid isPermaLink="false">Developer Documentation/Development Documentation.md</guid><pubDate>Mon, 19 Aug 2024 21:50:00 GMT</pubDate></item><item><title><![CDATA[Agreement]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818125009.png" src="lib/media/pasted-image-20240818125009.png"><br><br>
+<br><a data-href="Missing Gift Agreement" href="organization-flags/flags/missing-gift-agreement.html" class="internal-link" target="_self" rel="noopener">Missing Gift Agreement</a>
+]]></description><link>fund/itemizables/external-documents/types/agreement.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Agreement.md</guid><pubDate>Sun, 18 Aug 2024 18:56:36 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Amendment]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818125121.png" src="lib/media/pasted-image-20240818125121.png"><br><br>
+<br><a data-tooltip-position="top" aria-label="Amendment In Process" data-href="Amendment In Process" href="organization-flags/flags/amendment-in-process.html" class="internal-link" target="_self" rel="noopener">Amendment In Process Compliance Flag</a>
+]]></description><link>fund/itemizables/external-documents/types/amendment.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Amendment.md</guid><pubDate>Sun, 18 Aug 2024 18:53:31 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Correspondence]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818125406.png" src="lib/media/pasted-image-20240818125406.png">]]></description><link>fund/itemizables/external-documents/types/correspondence.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Correspondence.md</guid><pubDate>Sun, 18 Aug 2024 18:54:08 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Financial Report]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818125444.png" src="lib/media/pasted-image-20240818125444.png">]]></description><link>fund/itemizables/external-documents/types/financial-report.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Financial Report.md</guid><pubDate>Sun, 18 Aug 2024 18:54:46 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Impact Report]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818125508.png" src="lib/media/pasted-image-20240818125508.png">]]></description><link>fund/itemizables/external-documents/types/impact-report.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Impact Report.md</guid><pubDate>Sun, 18 Aug 2024 18:55:10 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Proposal]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240818124720.png" src="lib/media/pasted-image-20240818124720.png"><br><br><img alt="Pasted image 20240818124855.png" src="lib/media/pasted-image-20240818124855.png">]]></description><link>fund/itemizables/external-documents/types/proposal.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Types/Proposal.md</guid><pubDate>Sun, 18 Aug 2024 18:48:56 GMT</pubDate><enclosure url="lib/media/pasted-image-20240818124720.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240818124720.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Documents]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240816213536.png" src="lib/media/pasted-image-20240816213536.png"><br><br><br><br><br><br>]]></description><link>fund/itemizables/external-documents/documents.html</link><guid isPermaLink="false">Fund/Itemizables/External Documents/Documents.md</guid><pubDate>Sun, 18 Aug 2024 19:01:30 GMT</pubDate><enclosure url="lib/media/pasted-image-20240816213536.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240816213536.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Complience Table]]></title><description><![CDATA[ 
+ <br><br><a data-href="Compliance Flags" href="organization-flags/compliance-flags.html" class="internal-link" target="_self" rel="noopener">Compliance Flags</a> is related with Faculty fields.<br><br><img alt="Pasted image 20240814160654.png" src="lib/media/pasted-image-20240814160654.png"><br><br><img alt="Pasted image 20240814160708.png" src="lib/media/pasted-image-20240814160708.png">]]></description><link>fund/itemizables/faculty/complience/complience-table.html</link><guid isPermaLink="false">Fund/Itemizables/Faculty/Complience/Complience Table.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814160654.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814160654.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[End Date]]></title><description><![CDATA[ 
+ ]]></description><link>fund/itemizables/faculty/faculty-fields/end-date.html</link><guid isPermaLink="false">Fund/Itemizables/Faculty/Faculty Fields/End Date.md</guid><pubDate>Sun, 18 Aug 2024 17:34:12 GMT</pubDate></item><item><title><![CDATA[Last Name]]></title><description><![CDATA[ 
+ ]]></description><link>fund/itemizables/faculty/faculty-fields/last-name.html</link><guid isPermaLink="false">Fund/Itemizables/Faculty/Faculty Fields/Last Name.md</guid><pubDate>Sun, 18 Aug 2024 17:34:09 GMT</pubDate></item><item><title><![CDATA[Start Date]]></title><description><![CDATA[ 
+ ]]></description><link>fund/itemizables/faculty/faculty-fields/start-date.html</link><guid isPermaLink="false">Fund/Itemizables/Faculty/Faculty Fields/Start Date.md</guid><pubDate>Sun, 18 Aug 2024 17:35:52 GMT</pubDate></item><item><title><![CDATA[Faculty]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240819155916.png" src="lib/media/pasted-image-20240819155916.png"><br><br><img alt="Pasted image 20240819155932.png" src="lib/media/pasted-image-20240819155932.png">]]></description><link>fund/itemizables/faculty/faculty.html</link><guid isPermaLink="false">Fund/Itemizables/Faculty/Faculty.md</guid><pubDate>Mon, 19 Aug 2024 21:59:33 GMT</pubDate><enclosure url="lib/media/pasted-image-20240819155916.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240819155916.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Award Amount]]></title><description><![CDATA[ 
+ <br><br>The amount of the award that should be awarded according to the agreement.<br><br>My Funds -&gt; Specific Fund -&gt; Account Info -&gt; Criteria &amp; Restrictions -&gt;Award Amount (if default name)<br>
+<img alt="Pasted image 20240814134050.png" src="lib/media/pasted-image-20240814134050.png">]]></description><link>fund/itemizables/fields/common-fields/criteria-&amp;-restrictions/award-amount.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Criteria &amp; Restrictions/Award Amount.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814134050.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814134050.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Purpose]]></title><description><![CDATA[ 
+ <br><br>The purpose comes directly from the endowment or gift agreement (or amendment) and describes how the funds may be used or may not be used. In the case of a scholarships, the purpose also outlines the student criteria requirements.<br><br>My Funds -&gt; Specific Fund -&gt; Account Info -&gt; Criteria &amp; Restrictions -&gt; Purpose (By Default):<br>
+<img alt="Pasted image 20240814161229.png" src="lib/media/pasted-image-20240814161229.png">]]></description><link>fund/itemizables/fields/common-fields/criteria-&amp;-restrictions/purpose.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Criteria &amp; Restrictions/Purpose.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814161229.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814161229.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Market Value]]></title><description><![CDATA[ 
+ <br><br>The market value of a fund is the principal plus any unrealized gains or losses minus distributions, withdrawals, and fees<br><br>My Funds -&gt; Specific Fund -&gt; Financial Info -&gt;  Investment Account Info -&gt; Market Value.<br>
+<img alt="Pasted image 20240819155538.png" src="lib/media/pasted-image-20240819155538.png">]]></description><link>fund/itemizables/fields/common-fields/investment-account-info/market-value.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Investment Account Info/Market Value.md</guid><pubDate>Mon, 19 Aug 2024 21:56:31 GMT</pubDate><enclosure url="lib/media/pasted-image-20240819155538.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240819155538.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[YTD Net Distribution]]></title><description><![CDATA[ 
+ <br><br>The year-to-date net distribution is the portion of the income or return generated by the invested fund that is actually distributed to the spendable operating account.<br><br>My Funds -&gt; Specific Fund -&gt; Financial Info -&gt;  Investment Account Info -&gt; YTD Net Distribution.<br>
+<img alt="Pasted image 20240814144006.png" src="lib/media/pasted-image-20240814144006.png">]]></description><link>fund/itemizables/fields/common-fields/investment-account-info/ytd-net-distribution.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Investment Account Info/YTD Net Distribution.md</guid><pubDate>Mon, 19 Aug 2024 21:56:12 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814144006.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814144006.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Ending Balance]]></title><description><![CDATA[ 
+ <br><br>The spendable operating account Balance<br><br>My Funds -&gt; Specific Fund -&gt; Financial Info -&gt;  Operating Account Information -&gt; Ending Balance:<br>
+<img alt="Pasted image 20240814143645.png" src="lib/media/pasted-image-20240814143645.png">]]></description><link>fund/itemizables/fields/common-fields/operating-account-information/ending-balance.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Operating Account Information/Ending Balance.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814143645.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814143645.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Fund Type]]></title><description><![CDATA[ 
+ <br><br>Each organization determines the types of funds they offer. Common fund types include, endowment, endowed scholarship, annual scholarship, endowed academic position, and general fund.<br><br>My Funds -&gt; Specific Fund -&gt; Account Info -&gt;  General Fund Info -&gt; Fund type:<br>
+<img alt="Pasted image 20240814145649.png" src="lib/media/pasted-image-20240814145649.png"><br>]]></description><link>fund/itemizables/fields/common-fields/operating-account-information/fund-type.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Operating Account Information/Fund Type.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814145649.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814145649.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[YTD Expenses]]></title><description><![CDATA[ 
+ <br><br>Expenditures charged to the operating account in the current fiscal year.<br><br>My Funds -&gt; Specific Fund -&gt; Financial Info -&gt; Operation Account Information -&gt; YTD Expenses (if default name)<br>
+<img alt="Pasted image 20240814132221.png" src="lib/media/pasted-image-20240814132221.png">]]></description><link>fund/itemizables/fields/common-fields/operating-account-information/ytd-expenses.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Operating Account Information/YTD Expenses.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814132221.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814132221.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Spending Plan Requirement]]></title><description><![CDATA[ 
+ <br><br>Organizations may require a budget or spending plan from fund managers.<br><br>My Funds -&gt; Specific Fund -&gt; Financial Info -&gt;  Spending Plan -&gt;Spending Plan Requirement:<br>
+<img alt="Pasted image 20240814140630.png" src="lib/media/pasted-image-20240814140630.png">]]></description><link>fund/itemizables/fields/common-fields/spending-plan/spending-plan-requirement.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Common Fields/Spending Plan/Spending Plan Requirement.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814140630.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814140630.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Data Field Table]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240814001255.png" src="lib/media/pasted-image-20240814001255.png"><br><br><img alt="Pasted image 20240814001314.png" src="lib/media/pasted-image-20240814001314.png">]]></description><link>fund/itemizables/fields/sources/data-field-table.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Sources/Data Field Table.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814001255.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814001255.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Field Table]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240814001354.png" src="lib/media/pasted-image-20240814001354.png"><br><br><img alt="Pasted image 20240814001422.png" src="lib/media/pasted-image-20240814001422.png">]]></description><link>fund/itemizables/fields/sources/field-table.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Sources/Field Table.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814001354.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814001354.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[fundMeta.tsx]]></title><description><![CDATA[ 
+ <br>src/utils/fundMeta.ts
+Copiar]]></description><link>fund/itemizables/fields/sources/fundmeta.tsx.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Sources/fundMeta.tsx.md</guid><pubDate>Mon, 19 Aug 2024 21:57:32 GMT</pubDate></item><item><title><![CDATA[User field Table]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240814001117.png" src="lib/media/pasted-image-20240814001117.png"><br><br><img alt="Pasted image 20240814001201.png" src="lib/media/pasted-image-20240814001201.png">]]></description><link>fund/itemizables/fields/sources/user-field-table.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Sources/User field Table.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814001117.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814001117.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[How to create an Spending Plan]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240816154240.png" src="lib/media/pasted-image-20240816154240.png"><br><br><img alt="Pasted image 20240816154422.png" src="lib/media/pasted-image-20240816154422.png"><br><br>
+<br>Add Expenses (Required)
+<br>Commentary (Optional)<br>
+<img alt="Pasted image 20240816154619.png" src="lib/media/pasted-image-20240816154619.png">
+<br><br><img alt="Pasted image 20240816154805.png" src="lib/media/pasted-image-20240816154805.png"><br><br><img alt="Pasted image 20240816154825.png" src="lib/media/pasted-image-20240816154825.png">]]></description><link>fund/itemizables/fields/user-guides/spending-plan/how-to-create-an-spending-plan.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/User Guides/Spending Plan/How to create an Spending Plan.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240816154240.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240816154240.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Fields]]></title><description><![CDATA[ 
+ <br>Fields could come from different tables and files: <br>
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+]]></description><link>fund/itemizables/fields/fields.html</link><guid isPermaLink="false">Fund/Itemizables/Fields/Fields.md</guid><pubDate>Mon, 19 Aug 2024 21:57:59 GMT</pubDate></item><item><title><![CDATA[Invested Fund]]></title><description><![CDATA[ 
+ <br>An endowment fund is a financial asset, typically held by nonprofit organizations, such as universities, hospitals, or foundations, designed to provide long-term financial stability. The principal amount of the fund, which originates from donations, remains invested and is not spent. Instead, the organization only utilizes the income or interest generated from these investments. This ensures that the fund can support the organization's mission indefinitely, as the principal remains intact, allowing it to grow over time.<br>In essence, the fund is set up to ensure that only the returns on the investment are used for operational expenses, while the original donation stays preserved, enabling a sustainable financial resource for the organization​.]]></description><link>fund/type-of-investments/types/invested-fund.html</link><guid isPermaLink="false">Fund/Type of Investments/Types/Invested Fund.md</guid><pubDate>Mon, 19 Aug 2024 21:52:40 GMT</pubDate></item><item><title><![CDATA[Not Invested]]></title><description><![CDATA[ 
+ <br>A non-invested fund refers to a fund that is not placed into traditional financial investments like stocks, bonds, or other securities. Instead, the organization manages the funds directly, often using the principal amount for immediate needs or specific projects as outlined by the donor or the organization’s financial strategy.<br>Unlike an endowment fund, where the principal is typically preserved and only the generated income is used, a non-invested fund might be fully utilized to meet short-term goals or urgent operational requirements. This approach can provide flexibility for the organization to respond to immediate needs, but it does not create a long-term, sustainable income stream.<br>In essence, a non-invested fund is a financial resource allocated and spent directly, rather than being managed for growth over time through investment.]]></description><link>fund/type-of-investments/types/not-invested.html</link><guid isPermaLink="false">Fund/Type of Investments/Types/Not Invested.md</guid><pubDate>Mon, 19 Aug 2024 21:54:04 GMT</pubDate></item><item><title><![CDATA[Type of Investment]]></title><description><![CDATA[ 
+ <br><br>]]></description><link>fund/type-of-investments/type-of-investment.html</link><guid isPermaLink="false">Fund/Type of Investments/Type of Investment.md</guid><pubDate>Mon, 19 Aug 2024 21:50:33 GMT</pubDate></item><item><title><![CDATA[Fund]]></title><description><![CDATA[ 
+ <br><br>]]></description><link>fund/fund.html</link><guid isPermaLink="false">Fund/Fund.md</guid><pubDate>Mon, 19 Aug 2024 21:58:18 GMT</pubDate></item><item><title><![CDATA[Compliance Flag Thresholds (required field)]]></title><description><![CDATA[ 
+ <br>Set you customized excess accumulation threshold for<br>
+endowed/invested fund. We recommend this threshold to be<br>
+set between 1.5-4.0.<br>The "Compliance Flag Thresholds" section allows you to set a specific numerical value that defines what constitutes "excess accumulation" for an endowed or invested fund. This threshold acts as a trigger point; if the fund's accumulation exceeds this threshold, it will be flagged for potential action, such as increased spending or reinvestment.<br>If you manage a scholarship fund and set the Compliance Flag Threshold at 2.0, this means the fund is allowed to accumulate up to twice its annual distribution before it is flagged for excess accumulation. If the fund balance exceeds this threshold, the system will alert you, indicating that it might be time to either increase distributions (e.g., offer more scholarships) or reinvest the excess funds in a way that aligns with the fund's objectives.<br><img alt="Pasted image 20240813232839.png" src="lib/media/pasted-image-20240813232839.png"><br><br><a data-href="Excess Accumulation" href="organization-flags/flags/excess-accumulation/excess-accumulation.html" class="internal-link" target="_self" rel="noopener">Excess Accumulation</a><br><br><a data-href="Set a different Excess Accumulation Threshold per Fund Type" href="organization-flags/flags/excess-accumulation/set-a-different-excess-accumulation-threshold-per-fund-type.html" class="internal-link" target="_self" rel="noopener">Set a different Excess Accumulation Threshold per Fund Type</a><br>
+<a data-href="Reconfigure Excess Accumulation variables Pop Up" href="organization-flags/flags/excess-accumulation/reconfigure-excess-accumulation-variables-pop-up.html" class="internal-link" target="_self" rel="noopener">Reconfigure Excess Accumulation variables Pop Up</a>]]></description><link>organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html</link><guid isPermaLink="false">Organization Flags/Flags/Excess Accumulation/Compliance Flag Thresholds (required field).md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813232839.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813232839.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Excess Accumulation]]></title><description><![CDATA[ 
+ <br><br>Track excess accumulation threshold for endowed/invested funds and tell you which funds need more expenses or reinvestment.<br>
+This tracking helps identify whether a fund has accumulated more money than necessary or optimal, potentially indicating that the fund needs to either increase its expenditures or reinvest its excess capital.<br>
+Let's say your organization manages a scholarship fund that is supposed to distribute $50,000 annually. If the fund has accumulated $1 million but only disburses $10,000 a year, the excess accumulation might indicate that the fund is not being used as intended.<br><img alt="Pasted image 20240813232203.png" src="lib/media/pasted-image-20240813232203.png"><br><br>
+<br><a data-href="Compliance Flag Thresholds (required field)" href="organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html" class="internal-link" target="_self" rel="noopener">Compliance Flag Thresholds (required field)</a>
+<br><br><img alt="Pasted image 20240814142856.png" src="lib/media/pasted-image-20240814142856.png"><br>
+<img alt="Pasted image 20240814142922.png" src="lib/media/pasted-image-20240814142922.png"><br>
+By default, the  <a data-tooltip-position="top" aria-label="Excess Accumulation > 1. Organization Excess Accumulation Option" data-href="Excess Accumulation#1. Organization Excess Accumulation Option" href="organization-flags/flags/excess-accumulation/excess-accumulation.html#1._Organization_Excess_Accumulation_Option" class="internal-link" target="_self" rel="noopener">Excess Accumulation</a> tag triggers based on the following values:<br>
+<br>Balance:  <a data-href="Ending Balance" href="fund/itemizables/fields/common-fields/operating-account-information/ending-balance.html" class="internal-link" target="_self" rel="noopener">Ending Balance</a>
+<br>Distribution:  <a data-href="YTD Net Distribution" href="fund/itemizables/fields/common-fields/investment-account-info/ytd-net-distribution.html" class="internal-link" target="_self" rel="noopener">YTD Net Distribution</a><br>
+You can also configure this in the <a data-href="Compliance Flag Thresholds (required field)" href="organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html" class="internal-link" target="_self" rel="noopener">Compliance Flag Thresholds (required field)</a> section, specifically through the <a data-href="Reconfigure Excess Accumulation variables" href="Reconfigure Excess Accumulation variables" class="internal-link" target="_self" rel="noopener">Reconfigure Excess Accumulation variables</a> modal.<br>
+<img alt="Pasted image 20240814143512.png" src="lib/media/pasted-image-20240814143512.png">
+<br><br>Variables for Ratio, balance and distribution may change.<br>
+<img alt="Pasted image 20240814151918.png" src="lib/media/pasted-image-20240814151918.png"><br><br>const reconfigureExcessAccumulation = user?.organization.reconfigureExcessAccumulation
+
+let distribution =
+operatingAccount.investments?.at(0)?.investment?.netDistribution
+
+let excessBalance = operatingAccount?.cashBalance
+
+const threshold =(complianceByType? thresholdByType[fund?.type || ''] : user?.organization.complianceThreshold) || 2
+
+
+if (fund?.invested === true) {
+	if (allowedComplianceStatus?.includes('ExcessAccumulation')) {
+		if (reconfigureExcessAccumulation) {
+				 distribution = get(fund,user.organization.distributionField || 'investment.netDistribution')
+	
+			if (user.organization.balanceField){
+				excessBalance = get({...fund,operatingAccount: omit(operatingAccount, ['fund']),},user.organization.balanceField)
+			} 
+	
+			if (excessBalance === null) {
+				excessBalance = operatingAccount?.cashBalance
+			}
+
+		}
+
+		if (distribution != null &amp;&amp; distribution &gt; 0 &amp;&amp; excessBalance != null) {
+			if (excessBalance &gt;= threshold * distribution){statusList.push('ExcessAccumulation')
+			}
+		}
+}
+Copiar<br><br>
+<br>It will get if Excces Acumulation Variables are changed 
+<br>It will get  Distribution subvariable from Net distribution
+<br>It will get ExccesBalance subvariable from CashBalance
+<br>It will get Threshold value: <a data-tooltip-position="top" aria-label="Compliance Flag Thresholds (required field)" data-href="Compliance Flag Thresholds (required field)" href="organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html" class="internal-link" target="_self" rel="noopener">Type of Tresholds</a>
+<br>If <a data-tooltip-position="top" aria-label="Excess Accumulation > 1. Organization Excess Accumulation Option" data-href="Excess Accumulation#1. Organization Excess Accumulation Option" href="organization-flags/flags/excess-accumulation/excess-accumulation.html#1._Organization_Excess_Accumulation_Option" class="internal-link" target="_self" rel="noopener">Excess Acumulation Flag</a> is enabled
+
+<br>If <a data-tooltip-position="top" aria-label="Reconfigure Excess Accumulation variables Pop Up" data-href="Reconfigure Excess Accumulation variables Pop Up" href="organization-flags/flags/excess-accumulation/reconfigure-excess-accumulation-variables-pop-up.html" class="internal-link" target="_self" rel="noopener">Excess Variable is reconfigured</a> (step 1)
+
+<br>Distribution = Selected or Default
+<br>Excess Balance = Selected or Default
+
+
+
+
+<br>If Excess Balance &gt;= Threshold * Distribution
+
+<br><a data-tooltip-position="top" aria-label="Excess Accumulation > 2. Fund Excess Accumulation Tag" data-href="Excess Accumulation#2. Fund Excess Accumulation Tag" href="organization-flags/flags/excess-accumulation/excess-accumulation.html#2._Fund_Excess_Accumulation_Tag" class="internal-link" target="_self" rel="noopener">Exccess Accumulation Tag</a> Activated.
+
+
+]]></description><link>organization-flags/flags/excess-accumulation/excess-accumulation.html</link><guid isPermaLink="false">Organization Flags/Flags/Excess Accumulation/Excess Accumulation.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813232203.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813232203.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Reconfigure Excess Accumulation variables Pop Up]]></title><description><![CDATA[ 
+ <br>"Excess Accumulation variables" refers to the specific financial metrics or data points that are used to calculate or determine the Excess Accumulation Threshold (EAT). These variables are key inputs in the formula or model that assesses whether there is an excess accumulation of resources.<br>
+The result of this 2 variables must be a number between 1.5 and 4 <br><br>
+<br>Balance:
+
+<br><a data-href="Ending Balance" href="fund/itemizables/fields/common-fields/operating-account-information/ending-balance.html" class="internal-link" target="_self" rel="noopener">Ending Balance</a>
+<br><a data-href="Market Value" href="fund/itemizables/fields/common-fields/investment-account-info/market-value.html" class="internal-link" target="_self" rel="noopener">Market Value</a>
+
+
+<br>Distribution: 
+
+<br><a data-href="YTD Net Distribution" href="fund/itemizables/fields/common-fields/investment-account-info/ytd-net-distribution.html" class="internal-link" target="_self" rel="noopener">YTD Net Distribution</a>
+<br><a data-href="Estimated Net Distribution" href="Estimated Net Distribution" class="internal-link" target="_self" rel="noopener">Estimated Net Distribution</a>
+
+
+<br><img alt="Pasted image 20240813233359.png" src="lib/media/pasted-image-20240813233359.png"><br><br>
+<br><a data-href="Compliance Flag Thresholds (required field)" href="organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html" class="internal-link" target="_self" rel="noopener">Compliance Flag Thresholds (required field)</a>
+<br><a data-href="Excess Accumulation" href="organization-flags/flags/excess-accumulation/excess-accumulation.html" class="internal-link" target="_self" rel="noopener">Excess Accumulation</a>
+]]></description><link>organization-flags/flags/excess-accumulation/reconfigure-excess-accumulation-variables-pop-up.html</link><guid isPermaLink="false">Organization Flags/Flags/Excess Accumulation/Reconfigure Excess Accumulation variables Pop Up.md</guid><pubDate>Mon, 19 Aug 2024 21:57:07 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813233359.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813233359.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Set a different Excess Accumulation Threshold per Fund Type]]></title><description><![CDATA[ 
+ <br><br>The "Excess Accumulation Threshold" (EAT) refers to a defined limit or threshold above which the accumulation of certain resources or assets is considered excessive or inefficient. This concept can apply in various contexts.<br><img alt="Pasted image 20240813145911.png" src="lib/media/pasted-image-20240813145911.png"><br><br>
+<br><a data-href="Compliance Flag Thresholds (required field)" href="organization-flags/flags/excess-accumulation/compliance-flag-thresholds-(required-field).html" class="internal-link" target="_self" rel="noopener">Compliance Flag Thresholds (required field)</a>
+<br><a data-href="Excess Accumulation" href="organization-flags/flags/excess-accumulation/excess-accumulation.html" class="internal-link" target="_self" rel="noopener">Excess Accumulation</a>
+<br><br>List based from <a data-href="Fund Types" href="Fund Types" class="internal-link" target="_self" rel="noopener">Fund Types</a><br><br><img alt="Pasted image 20240814142856.png" src="lib/media/pasted-image-20240814142856.png"><br>
+<img alt="Pasted image 20240814142922.png" src="lib/media/pasted-image-20240814142922.png"><br>
+It uses the same logic as <a data-href="Excess Accumulation" href="organization-flags/flags/excess-accumulation/excess-accumulation.html" class="internal-link" target="_self" rel="noopener">Excess Accumulation</a> Fund Excess Accumulation Tag.<br>
+But the <a data-href="Fund Type" href="fund/itemizables/fields/common-fields/operating-account-information/fund-type.html" class="internal-link" target="_self" rel="noopener">Fund Type</a> will be relevant in order to filter those funds that validate it and those that doesn't.<br>
+<img alt="Pasted image 20240814145649.png" src="lib/media/pasted-image-20240814145649.png">]]></description><link>organization-flags/flags/excess-accumulation/set-a-different-excess-accumulation-threshold-per-fund-type.html</link><guid isPermaLink="false">Organization Flags/Flags/Excess Accumulation/Set a different Excess Accumulation Threshold per Fund Type.md</guid><pubDate>Thu, 15 Aug 2024 05:41:18 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813145911.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813145911.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Negative Balance]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240813235309.png" src="lib/media/pasted-image-20240813235309.png"><br><br><a data-href="Reconfigure Negative Balance Variables MODAL" href="organization-flags/flags/negative-balance/reconfigure-negative-balance-variables-modal.html" class="internal-link" target="_self" rel="noopener">Reconfigure Negative Balance Variables MODAL</a><br><br>In order for you to achieve compliance for fund,  you must contact your system admin to resolve this accounting flag.<br>
+<img alt="Pasted image 20240814232354.png" src="lib/media/pasted-image-20240814232354.png"><br>
+<img alt="Pasted image 20240814232626.png" src="lib/media/pasted-image-20240814232626.png"><br>
+Usually by default you can find this trigger value for the <a data-href="Zero Expenditure" href="organization-flags/flags/zero-expenditure/zero-expenditure.html" class="internal-link" target="_self" rel="noopener">Zero Expenditure</a> tag from <a data-href="Ending Balance" href="fund/itemizables/fields/common-fields/operating-account-information/ending-balance.html" class="internal-link" target="_self" rel="noopener">Ending Balance</a> by default or <a data-href="Reconfigure Negative Balance Variables MODAL" href="organization-flags/flags/negative-balance/reconfigure-negative-balance-variables-modal.html" class="internal-link" target="_self" rel="noopener">Reconfigure Negative Balance Variables MODAL</a> if its needed.<br>
+<img alt="Pasted image 20240814232723.png" src="lib/media/pasted-image-20240814232723.png"><br><br>///////////// Compliance Status
+const balance = get(fund,user?.organization.negativeBalanceField || 'operatingAccount.cashBalance')
+if (balance &amp;&amp; balance &lt; 0) {
+	if (allowedComplianceStatus?.includes('NegativeBalance')) {
+		statusList.push('NegativeBalance')
+	}
+}
+
+
+///////////// Compliance 
+const negativeBalance = get(fund,organization.negativeBalanceField || 'operatingAccount.cashBalance')
+// Ending Balance is Negative
+if (negativeBalance &amp;&amp; negativeBalance &lt; 0) {
+	if (allowedComplianceStatus?.includes('NegativeBalance')) {
+		// console.log(fund.operatingAccount.code, 'NegativeBalance')
+		statusList.push('NegativeBalance')
+	}
+}
+Copiar<br><br>
+<br>
+Get balance field from <a data-tooltip-position="top" aria-label="Reconfigure Negative Balance Variables MODAL" data-href="Reconfigure Negative Balance Variables MODAL" href="organization-flags/flags/negative-balance/reconfigure-negative-balance-variables-modal.html" class="internal-link" target="_self" rel="noopener">Personalized Negative Balance Value</a> or <a data-href="Market Value" href="fund/itemizables/fields/common-fields/investment-account-info/market-value.html" class="internal-link" target="_self" rel="noopener">Market Value</a> by default.
+
+<br>
+if balance is lower than 0
+
+<br>
+if <a data-href="#1. Organization Negative Balance Option" href="about:blank#1._Organization_Negative_Balance_Option" class="internal-link" target="_self" rel="noopener">1. Organization Negative Balance Option</a> enabled
+
+<br><a data-href="#2. Fund Negative Balance Tag" href="about:blank#2._Fund_Negative_Balance_Tag" class="internal-link" target="_self" rel="noopener">2. Fund Negative Balance Tag</a> Activated.
+
+
+<br>
+Get balance field from <a data-tooltip-position="top" aria-label="Reconfigure Negative Balance Variables MODAL" data-href="Reconfigure Negative Balance Variables MODAL" href="organization-flags/flags/negative-balance/reconfigure-negative-balance-variables-modal.html" class="internal-link" target="_self" rel="noopener">Personalized Negative Balance Value</a> or <a data-href="Market Value" href="fund/itemizables/fields/common-fields/investment-account-info/market-value.html" class="internal-link" target="_self" rel="noopener">Market Value</a> by default.
+
+<br>
+if balance is lower than 0
+
+<br>
+if <a data-href="#1. Organization Negative Balance Option" href="about:blank#1._Organization_Negative_Balance_Option" class="internal-link" target="_self" rel="noopener">1. Organization Negative Balance Option</a> enabled
+
+<br><a data-href="#2. Fund Negative Balance Tag" href="about:blank#2._Fund_Negative_Balance_Tag" class="internal-link" target="_self" rel="noopener">2. Fund Negative Balance Tag</a> Activated.
+
+
+]]></description><link>organization-flags/flags/negative-balance/negative-balance.html</link><guid isPermaLink="false">Organization Flags/Flags/Negative Balance/Negative Balance.md</guid><pubDate>Mon, 19 Aug 2024 21:57:07 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813235309.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813235309.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Reconfigure Negative Balance Variables MODAL]]></title><description><![CDATA[ 
+ <br><br>
+<br><a data-href="Ending Balance" href="fund/itemizables/fields/common-fields/operating-account-information/ending-balance.html" class="internal-link" target="_self" rel="noopener">Ending Balance</a>
+<br><a data-href="Market Value" href="fund/itemizables/fields/common-fields/investment-account-info/market-value.html" class="internal-link" target="_self" rel="noopener">Market Value</a><br>
+<img alt="Pasted image 20240814233037.png" src="lib/media/pasted-image-20240814233037.png">
+<br><br>
+<br><a data-href="Negative Balance" href="organization-flags/flags/negative-balance/negative-balance.html" class="internal-link" target="_self" rel="noopener">Negative Balance</a>
+<br><br>List based from <a data-href="Fields" href="fund/itemizables/fields/fields.html" class="internal-link" target="_self" rel="noopener">Fields</a>]]></description><link>organization-flags/flags/negative-balance/reconfigure-negative-balance-variables-modal.html</link><guid isPermaLink="false">Organization Flags/Flags/Negative Balance/Reconfigure Negative Balance Variables MODAL.md</guid><pubDate>Mon, 19 Aug 2024 21:57:07 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814233037.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814233037.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Reconfigure Zero Expense Variable]]></title><description><![CDATA[ 
+ <br>Specific financial field that is being used to define or track whether an account or fund has incurred any expenses.<br>
+The 'expenses' selectable field is for choosing the variable that will represent the expenses flag.<br>
+If this variable flag stays 0 it will trigger in the fund the <a data-href="Zero Expenditure" href="organization-flags/flags/zero-expenditure/zero-expenditure.html" class="internal-link" target="_self" rel="noopener">Zero Expenditure</a> flag<br><br>
+<br><a data-href="YTD Expenses" href="fund/itemizables/fields/common-fields/operating-account-information/ytd-expenses.html" class="internal-link" target="_self" rel="noopener">YTD Expenses</a>
+<br><a data-href="Award Amount" href="fund/itemizables/fields/common-fields/criteria-&amp;-restrictions/award-amount.html" class="internal-link" target="_self" rel="noopener">Award Amount</a>
+<br><a data-href="Estimated Expenses" href="Estimated Expenses" class="internal-link" target="_self" rel="noopener">Estimated Expenses</a> // add in the future<br>
+<img alt="Pasted image 20240813141002.png" src="lib/media/pasted-image-20240813141002.png">
+<br><br>
+<br><a data-href="Zero Expenditure" href="organization-flags/flags/zero-expenditure/zero-expenditure.html" class="internal-link" target="_self" rel="noopener">Zero Expenditure</a>
+<br><br>List based from <a data-href="Fields" href="fund/itemizables/fields/fields.html" class="internal-link" target="_self" rel="noopener">Fields</a>]]></description><link>organization-flags/flags/zero-expenditure/reconfigure-zero-expense-variable.html</link><guid isPermaLink="false">Organization Flags/Flags/Zero Expenditure/Reconfigure Zero Expense Variable.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813141002.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813141002.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Zero Expenditure]]></title><description><![CDATA[ 
+ <br><br>Zero Expenditures: Total Capital Out of Compliance<br>
+'Track all funds that have $0 in total expenses year-to-date.'<br>
+<img alt="Pasted image 20240813151922.png" src="lib/media/pasted-image-20240813151922.png"><br>
+"Zero Expenditure" refers to funds or accounts that have had no expenses recorded year-to-date. This means that throughout the current year, there have been no financial outflows or spending associated with these funds.<br>Tracking this option makes possible ensuring that the system identifies and monitors any accounts or funds that have not incurred any expenses so far this year. This could be useful for compliance or reporting purposes, where it is important to know which funds have remained untouched in terms of spending.<br><br>
+<br><a data-href="Reconfigure Zero Expense Variable" href="organization-flags/flags/zero-expenditure/reconfigure-zero-expense-variable.html" class="internal-link" target="_self" rel="noopener">Reconfigure Zero Expense Variable</a>
+<br><br>  Operating fund or account has had no expenses during current fiscal year.<br>
+<img alt="Pasted image 20240814131409.png" src="lib/media/pasted-image-20240814131409.png"><br>
+<img alt="Pasted image 20240814131851.png" src="lib/media/pasted-image-20240814131851.png"><br>
+Usually by default you can find this trigger value for the <a data-href="Zero Expenditure" href="organization-flags/flags/zero-expenditure/zero-expenditure.html" class="internal-link" target="_self" rel="noopener">Zero Expenditure</a> tag from <a data-href="YTD Expenses" href="fund/itemizables/fields/common-fields/operating-account-information/ytd-expenses.html" class="internal-link" target="_self" rel="noopener">YTD Expenses</a> by default or <a data-href="Reconfigure Zero Expense Variable" href="organization-flags/flags/zero-expenditure/reconfigure-zero-expense-variable.html" class="internal-link" target="_self" rel="noopener">Reconfigure Zero Expense Variable</a> if its already modified.<br>
+<img alt="Pasted image 20240814132221.png" src="lib/media/pasted-image-20240814132221.png"><br><br>let expense = get(fund,
+user?.organization.expensesField ||
+'operatingAccount.expenses'
+)
+
+if (!operatingAccount?.encumbrances &amp;&amp; expense === 0) {
+	if (allowedComplianceStatus?.includes('ZeroExpenses')) {
+		statusList.push('ZeroExpenses')
+	}
+}
+Copiar<br><br>
+<br>It will get Fund Expense field from either default expenses field that must have <a data-href="YTD Expenses" href="fund/itemizables/fields/common-fields/operating-account-information/ytd-expenses.html" class="internal-link" target="_self" rel="noopener">YTD Expenses</a> field or it takes a personalized field modified by the Organization Admin. <a data-href="Reconfigure Zero Expense Variable" href="organization-flags/flags/zero-expenditure/reconfigure-zero-expense-variable.html" class="internal-link" target="_self" rel="noopener">Reconfigure Zero Expense Variable</a>
+<br>If 
+<br>If expenses took from step 1 are equal to 0 it means that this fund have no financial outflows.
+<br>if detected and <a data-href="Zero Expenditure" href="organization-flags/flags/zero-expenditure/zero-expenditure.html" class="internal-link" target="_self" rel="noopener">Zero Expenditure</a> flag it's enabled, then add it to the fund <a data-href="Compliance Flags" href="organization-flags/compliance-flags.html" class="internal-link" target="_self" rel="noopener">Compliance Flags</a> list.
+]]></description><link>organization-flags/flags/zero-expenditure/zero-expenditure.html</link><guid isPermaLink="false">Organization Flags/Flags/Zero Expenditure/Zero Expenditure.md</guid><pubDate>Sun, 18 Aug 2024 18:13:21 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813151922.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813151922.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Amendment In Process]]></title><description><![CDATA[ 
+ <br><br>Operating fund or account is currently undergoing an amendment to the current fund purpose/criteria.<br>
+<img alt="Pasted image 20240813233706.png" src="lib/media/pasted-image-20240813233706.png"><br><br>  In order for you to achieve compliance for fund, you must contact your system admin to resolve this amendment flag,<br>
+<img alt="Pasted image 20240814160748.png" src="lib/media/pasted-image-20240814160748.png"><br>
+<img alt="Pasted image 20240814160858.png" src="lib/media/pasted-image-20240814160858.png">]]></description><link>organization-flags/flags/amendment-in-process.html</link><guid isPermaLink="false">Organization Flags/Flags/Amendment In Process.md</guid><pubDate>Mon, 19 Aug 2024 21:59:55 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813233706.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813233706.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Holding Account]]></title><description><![CDATA[ 
+ <br><br>This field defines whether the fund has a holding account or not.<br>
+<img alt="Pasted image 20240814233922.png" src="lib/media/pasted-image-20240814233922.png"><br><br>Operating fund or account that is not fully established due to unmet thresholds or other restrictions. Funds on these accounts are usually not deployable.<br><img alt="Pasted image 20240814125228.png" src="lib/media/pasted-image-20240814125228.png"><br><br>///////////////// Compliance Status
+if (fund?.holdingAccount === true) {
+	if (allowedComplianceStatus?.includes('HoldingAccount')) {
+		statusList.push('HoldingAccount')
+	}
+}
+
+////////// Compliance
+if (fund?.holdingAccount === true) {
+	if (allowedComplianceStatus?.includes('HoldingAccount')) {
+		statusList.push('HoldingAccount')
+	}
+}
+
+Copiar]]></description><link>organization-flags/flags/holding-account.html</link><guid isPermaLink="false">Organization Flags/Flags/Holding Account.md</guid><pubDate>Mon, 19 Aug 2024 14:01:23 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814233922.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814233922.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Missing Gift Agreement]]></title><description><![CDATA[ 
+ <br><br>The "Missing Gift Agreement" checks whether any fund has an <a data-tooltip-position="top" aria-label="Agreement" data-href="Agreement" href="fund/itemizables/external-documents/types/agreement.html" class="internal-link" target="_self" rel="noopener">Agreement Document</a> uploaded in the fund's Documents section.<br><img alt="Pasted image 20240813235625.png" src="lib/media/pasted-image-20240813235625.png"><br>
+Using flags like "Missing Gift Agreement" in your fund management system is essential for ensuring that all necessary documentation is in place and up to date, which helps maintain compliance and accountability. These flags act as safeguards by quickly identifying any missing critical documents, allowing your organization to address potential issues proactively. This not only supports transparency and trust with donors but also protects your organization from legal risks and ensures you meet all regulatory requirements. Implementing such compliance measures ultimately helps in building a stronger, more reliable relationship with your donors and stakeholders​.<br><br>
+<br><a data-href="Documents" href="fund/itemizables/external-documents/documents.html" class="internal-link" target="_self" rel="noopener">Documents</a>
+<br><br>Operating fund or account is not currently associated with any gift agreement.<br>
+<img alt="Pasted image 20240814233416.png" src="lib/media/pasted-image-20240814233416.png"><br>
+<img alt="Pasted image 20240818123814.png" src="lib/media/pasted-image-20240818123814.png"><br><br>//////////// Compliance Status
+if (!fund?.documents?.some((document) =&gt; document.type?.match(/Agreement/i) !==null)) {
+	if (allowedComplianceStatus?.includes('MissingGiftAgreement')) {
+		statusList.push('MissingGiftAgreement')
+	}
+}
+
+//////////// Compliance 
+if (!fund?.documents?.some((document) =&gt; document.type?.match(/Agreement/i) !==null)) {
+	if (allowedComplianceStatus?.includes('MissingGiftAgreement')) {
+		statusList.push('MissingGiftAgreement')
+	}
+}
+Copiar<br><br>
+<br>
+if <a data-tooltip-position="top" aria-label="Documents > Types of Documents" data-href="Documents#Types of Documents" href="fund/itemizables/external-documents/documents.html#Types_of_Documents" class="internal-link" target="_self" rel="noopener">Fund Documents</a> have some <a data-tooltip-position="top" aria-label="Agreement" data-href="Agreement" href="fund/itemizables/external-documents/types/agreement.html" class="internal-link" target="_self" rel="noopener">Agreement Document Type</a> 
+
+<br>
+if <a data-href="#1. Organization Missing Gift Agreement Option" href="about:blank#1._Organization_Missing_Gift_Agreement_Option" class="internal-link" target="_self" rel="noopener">1. Organization Missing Gift Agreement Option</a> is enabled
+
+<br><a data-href="#2. Fund Missing Gift Agreement Tag" href="about:blank#2._Fund_Missing_Gift_Agreement_Tag" class="internal-link" target="_self" rel="noopener">2. Fund Missing Gift Agreement Tag</a> Activated.
+
+
+<br>
+if <a data-tooltip-position="top" aria-label="Documents > Types of Documents" data-href="Documents#Types of Documents" href="fund/itemizables/external-documents/documents.html#Types_of_Documents" class="internal-link" target="_self" rel="noopener">Fund Documents</a> have some <a data-tooltip-position="top" aria-label="Agreement" data-href="Agreement" href="fund/itemizables/external-documents/types/agreement.html" class="internal-link" target="_self" rel="noopener">Agreement Document Type</a> 
+
+<br>
+if <a data-href="#1. Organization Missing Gift Agreement Option" href="about:blank#1._Organization_Missing_Gift_Agreement_Option" class="internal-link" target="_self" rel="noopener">1. Organization Missing Gift Agreement Option</a> is enabled
+
+<br><a data-href="#2. Fund Missing Gift Agreement Tag" href="about:blank#2._Fund_Missing_Gift_Agreement_Tag" class="internal-link" target="_self" rel="noopener">2. Fund Missing Gift Agreement Tag</a> Activated.
+
+
+<br>]]></description><link>organization-flags/flags/missing-gift-agreement.html</link><guid isPermaLink="false">Organization Flags/Flags/Missing Gift Agreement.md</guid><pubDate>Sun, 18 Aug 2024 18:59:54 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813235625.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813235625.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Needs Review]]></title><description><![CDATA[ 
+ <br><img alt="Pasted image 20240814234158.png" src="lib/media/pasted-image-20240814234158.png"><br><br>This fund has been flagged by the advancement team as needing a review or needing fund maintenance. Contact your system administrator.<br>
+its a manual option for fund tags.<br><br>///////////////// Compliance Status
+if (allowedComplianceStatus?.includes('NeedsReview')) {
+	statusList.push('NeedsReview')
+}
+////////// Compliance
+if (allowedComplianceStatus?.includes('NeedsReview')) {
+	statusList.push('NeedsReview')
+}
+
+Copiar]]></description><link>organization-flags/flags/needs-review.html</link><guid isPermaLink="false">Organization Flags/Flags/Needs Review.md</guid><pubDate>Mon, 19 Aug 2024 14:02:39 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814234158.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814234158.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Pledge Due]]></title><description><![CDATA[ 
+ <br><img alt="Pasted image 20240814234016.png" src="lib/media/pasted-image-20240814234016.png"><br><br>///////////////// Compliance Status
+if (fund?.additional &amp;&amp; new Date((fund.additional as any)['pledgeTargetClose']) &lt; new Date()) {
+	statusList.push('PledgeDue')
+}
+
+Copiar]]></description><link>organization-flags/flags/pledge-due.html</link><guid isPermaLink="false">Organization Flags/Flags/Pledge Due.md</guid><pubDate>Mon, 19 Aug 2024 13:58:59 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814234016.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814234016.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Spending Plan Pending]]></title><description><![CDATA[ 
+ <br><br>Track funds on spending plan approval status. Spending plans are usually submitted by the fund manager.<br>
+refers to a status or flag indicating that a spending plan has not yet been finalized or submitted for a particular fund or set of funds.<br><br>This option allows you to enforce the requirement of having a spending plan only for specific funds, rather than applying this requirement to all funds or all funds of a certain type.<br>
+Let's say your organization has several funds, but only Fund 1 and Fund 4 are part of a critical project that requires strict budgeting and oversight. By using this option, you can ensure that only these two funds (Fund 1 and Fund 4) are flagged as "Spending Plan Pending." This way, these funds cannot be used until a detailed spending plan is submitted and approved, ensuring that they are used according to the organization's financial policies.<br>
+It can select multiple founds one by one.<br>
+<img alt="Pasted image 20240813152823.png" src="lib/media/pasted-image-20240813152823.png"><br><br>If your organization has multiple types of funds, and you only want to enforce the spending plan requirement for "Capital Funds," you would select "Capital Fund" from the dropdown. This means that until a spending plan is in place for each Capital Fund, those funds cannot be used. Other types of funds, such as "Current Use Scholarship," might not require a spending plan if not selected.<br>
+<a data-href="Fund Types" href="Fund Types" class="internal-link" target="_self" rel="noopener">Fund Types</a><br>
+<img alt="Pasted image 20240813153228.png" src="lib/media/pasted-image-20240813153228.png"><br><br>Not extra option, all invested founds would need spending plan in order to use the fund.<br>
+<img alt="Pasted image 20240813231946.png" src="lib/media/pasted-image-20240813231946.png"><br><br>No extra, all funds would need Spending Plan.<br>
+<img alt="Pasted image 20240813232039.png" src="lib/media/pasted-image-20240813232039.png"><br><br>The system administrator has required the submission and approval of a spending plan for this fund. There is no approved spending plan for this fund on file that applies to current fiscal year.<br>
+<img alt="Pasted image 20240814140416.png" src="lib/media/pasted-image-20240814140416.png"><br>
+<img alt="Pasted image 20240814140451.png" src="lib/media/pasted-image-20240814140451.png"><a data-href="Spending Plan Requirement" href="fund/itemizables/fields/common-fields/spending-plan/spending-plan-requirement.html" class="internal-link" target="_self" rel="noopener">Spending Plan Requirement</a> is the flag field that would trigger the Tag depending on how it was configure in Organization options.<br>
+<img alt="Pasted image 20240814140630.png" src="lib/media/pasted-image-20240814140630.png"><br><br>if (
+fund?.spendingPlanStatus === 'Required' &amp;&amp;
+allowedComplianceStatus?.includes('SpendingPlanPending')
+) 
+{
+	let shouldAddSpendingPlanPending = false
+		switch (spendingPlanOptions?.target) {
+		case 'single':
+			if (spendingPlanOptions?.value?.includes(fund.id)) {
+				shouldAddSpendingPlanPending = true
+			}
+		break
+		case 'type':
+			if (fund.type === spendingPlanOptions?.value) {
+				shouldAddSpendingPlanPending = true
+			}
+		break
+		case 'invested':
+			if (fund.invested === true) {
+				shouldAddSpendingPlanPending = true
+			}
+		break
+		default:
+			shouldAddSpendingPlanPending = true
+		break
+	}
+	
+	  
+	if (shouldAddSpendingPlanPending) {
+		statusList.push('SpendingPlanPending')
+	}
+}
+Copiar<br><br>
+<br>If <a data-tooltip-position="top" aria-label="Spending Plan Pending > 1. Organization Spending Plan Pending Option" data-href="Spending Plan Pending#1. Organization Spending Plan Pending Option" href="organization-flags/flags/spending-plan-pending.html#1._Organization_Spending_Plan_Pending_Option" class="internal-link" target="_self" rel="noopener">Spending Plan Organization Option</a> is selected AND Fund spending plan required 
+<br>if <a data-tooltip-position="top" aria-label="Spending Plan Pending > Require for specific fund" data-href="Spending Plan Pending#Require for specific fund" href="organization-flags/flags/spending-plan-pending.html#Require_for_specific_fund" class="internal-link" target="_self" rel="noopener">Required for specific fund</a> selected AND Selected funds include current fund:
+
+<br><a data-tooltip-position="top" aria-label="Spending Plan Pending > 2. Found Spending Plan Pending Tag" data-href="Spending Plan Pending#2. Found Spending Plan Pending Tag" href="organization-flags/flags/spending-plan-pending.html#2._Found_Spending_Plan_Pending_Tag" class="internal-link" target="_self" rel="noopener">Spending Plan Pending Tag</a> Activated
+
+
+<br>if <a data-tooltip-position="top" aria-label="Spending Plan Pending > Require for all funds of a given type" data-href="Spending Plan Pending#Require for all funds of a given type" href="organization-flags/flags/spending-plan-pending.html#Require_for_all_funds_of_a_given_type" class="internal-link" target="_self" rel="noopener">Require for all funds of a given type</a> selected AND current fund type is one of them:
+
+<br><a data-tooltip-position="top" aria-label="Spending Plan Pending > 2. Found Spending Plan Pending Tag" data-href="Spending Plan Pending#2. Found Spending Plan Pending Tag" href="organization-flags/flags/spending-plan-pending.html#2._Found_Spending_Plan_Pending_Tag" class="internal-link" target="_self" rel="noopener">Spending Plan Pending Tag</a> Activated
+
+
+<br>if <a data-tooltip-position="top" aria-label="Spending Plan Pending > Require for all invested funds" data-href="Spending Plan Pending#Require for all invested funds" href="organization-flags/flags/spending-plan-pending.html#Require_for_all_invested_funds" class="internal-link" target="_self" rel="noopener">Require for all invested funds</a> selected AND current fund type is one of them:
+
+<br><a data-tooltip-position="top" aria-label="Spending Plan Pending > 2. Found Spending Plan Pending Tag" data-href="Spending Plan Pending#2. Found Spending Plan Pending Tag" href="organization-flags/flags/spending-plan-pending.html#2._Found_Spending_Plan_Pending_Tag" class="internal-link" target="_self" rel="noopener">Spending Plan Pending Tag</a> Activated
+
+
+<br>if <a data-tooltip-position="top" aria-label="Spending Plan Pending > Require for all funds" data-href="Spending Plan Pending#Require for all funds" href="organization-flags/flags/spending-plan-pending.html#Require_for_all_funds" class="internal-link" target="_self" rel="noopener">Require for all funds</a> selected
+
+<br><a data-tooltip-position="top" aria-label="Spending Plan Pending > 2. Found Spending Plan Pending Tag" data-href="Spending Plan Pending#2. Found Spending Plan Pending Tag" href="organization-flags/flags/spending-plan-pending.html#2._Found_Spending_Plan_Pending_Tag" class="internal-link" target="_self" rel="noopener">Spending Plan Pending Tag</a> Activated
+
+
+<br><br>create a spending plan in order to quit this compliance flag. ]]></description><link>organization-flags/flags/spending-plan-pending.html</link><guid isPermaLink="false">Organization Flags/Flags/Spending Plan Pending.md</guid><pubDate>Fri, 16 Aug 2024 23:59:45 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813152823.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813152823.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Underwater Endowment]]></title><description><![CDATA[ 
+ <br><br><img alt="Pasted image 20240814233546.png" src="lib/media/pasted-image-20240814233546.png"><br><br>Operating fund or account is associated with an investment account that has a market value that is less than either <br>
+<br>the amount of the principal gift (book value) 
+<br>the amount required to be maintained by the donor.<br>
+<img alt="Pasted image 20240814233712.png" src="lib/media/pasted-image-20240814233712.png"><br>
+<img alt="Pasted image 20240818133610.png" src="lib/media/pasted-image-20240818133610.png">
+<br><br>///////////////// Compliance Status
+if (fund?.investment?.marketValue ?? 0 &lt; 0) {
+	if (allowedComplianceStatus?.includes('UnderwaterEndowment')) {
+		statusList.push('UnderwaterEndowment')
+	}
+}
+
+
+///////////////////// Compliance 
+if (fund?.investment?.marketValue ?? 0 &lt; 0) {
+	if (allowedComplianceStatus?.includes('UnderwaterEndowment')) {
+		statusList.push('UnderwaterEndowment')
+	}
+}
+Copiar<br><br>
+<br>Start
+
+<br>A new CSV file is uploaded.
+
+
+<br>Check for Column
+
+<br>Does the CSV contain a column named "market value"?
+<br>Yes: Continue to Step 3.
+<br>No: End process.
+
+
+<br>Check for Negative Values
+
+<br>Does the "market value" column contain any value equal to -0?
+<br>Yes: Proceed to Step 4.
+<br>No: End process.
+
+
+<br>Activate Tag
+
+<br>Activate the [[#2. Found Underwater Endowment Tag]].
+
+
+<br>End
+]]></description><link>organization-flags/flags/underwater-endowment.html</link><guid isPermaLink="false">Organization Flags/Flags/Underwater Endowment.md</guid><pubDate>Mon, 19 Aug 2024 22:02:44 GMT</pubDate><enclosure url="lib/media/pasted-image-20240814233546.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240814233546.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Unfilled Faculty Position]]></title><description><![CDATA[ 
+ <br><br>Operating fund or account currently has an unfilled or unassigned faculty position, where one is available. Only relevant for funds associated to faculty positions.<br><img alt="Pasted image 20240813234031.png" src="lib/media/pasted-image-20240813234031.png"><br><br>In order for you to achieve compliance for fund, you must assign an approved faculty or staff to this fund as recipient.<br><br>
+<br><a data-href="Fund Type" href="fund/itemizables/fields/common-fields/operating-account-information/fund-type.html" class="internal-link" target="_self" rel="noopener">Fund Type</a><br>
+<img alt="Pasted image 20240814224810.png" src="lib/media/pasted-image-20240814224810.png"><br>
+<img alt="Pasted image 20240814224914.png" src="lib/media/pasted-image-20240814224914.png">
+<br><br>if (allowedComplianceStatus?.includes('UnfilledFacultyPosition')) {
+	// Check if the fund type contains "Faculty" or "Academic Position" (case-insensitive)
+	if (fund?.type &amp;&amp; (/faculty/i.test(fund.type) || /academic position/i.test(fund.type))) {
+		// Check if both faculty name and email are blank
+		const isFacultyNameEmpty = !fund?.faculty?.firstName &amp;&amp; !fund?.faculty?.lastName
+		if (isFacultyNameEmpty) {
+			statusList.push('UnfilledFacultyPosition')
+		}
+	}
+}
+
+
+if (allowedComplianceStatus?.includes('UnfilledFacultyPosition')) {
+	// Check if the fund type contains "Faculty" (case-insensitive)
+	if (fund?.type &amp;&amp; /faculty/i.test(fund.type)) {
+		// Check if faculty appointment start date is null
+		if (fund?.faculty?.appointmentStartDate === null) {
+			statusList.push('UnfilledFacultyPosition')
+		}
+		fund?.faculty?.appointmentEndDate
+		// Additional condition: Check if the current date is greater than appointment end date
+		const currentDate = new Date() // Get the current date
+		// Check if appointmentEndDate is defined and not null
+		if (fund?.faculty?.appointmentEndDate) {
+			const appointmentEndDate = new Date(fund.faculty.appointmentEndDate)
+			if (currentDate &gt; appointmentEndDate) {
+				statusList.push('UnfilledFacultyPosition')
+			}
+		}
+	}
+}
+Copiar<br><br>
+<br>
+if <a data-tooltip-position="top" aria-label="Unfilled Faculty Position > 1. Organization Unfilled Faculty Position Option" data-href="Unfilled Faculty Position#1. Organization Unfilled Faculty Position Option" href="organization-flags/flags/unfilled-faculty-position.html#1._Organization_Unfilled_Faculty_Position_Option" class="internal-link" target="_self" rel="noopener">Unfilled Faculty Position Flag</a> enabled
+
+<br>
+If the current fund's <a data-tooltip-position="top" aria-label="Fund Type > Description" data-href="Fund Type#Description" href="fund/itemizables/fields/common-fields/operating-account-information/fund-type.html#Description" class="internal-link" target="_self" rel="noopener">Fund Type</a> string contains the word "Faculty"
+
+<br>
+If <a data-tooltip-position="top" aria-label="Name" data-href="Name" href="fund/itemizables/faculty/faculty-fields/name.html" class="internal-link" target="_self" rel="noopener">Fund's Faculty name</a> is EMPTY and <a data-tooltip-position="top" aria-label="Last Name" data-href="Last Name" href="fund/itemizables/faculty/faculty-fields/last-name.html" class="internal-link" target="_self" rel="noopener">Fund's Faculty last name</a> is EMPTY.
+
+<br><a data-href="#2. Found Unfilled Faculty Position Tag" href="about:blank#2._Found_Unfilled_Faculty_Position_Tag" class="internal-link" target="_self" rel="noopener">2. Found Unfilled Faculty Position Tag</a> Activated
+
+
+<br>
+if <a data-tooltip-position="top" aria-label="Unfilled Faculty Position > 1. Organization Unfilled Faculty Position Option" data-href="Unfilled Faculty Position#1. Organization Unfilled Faculty Position Option" href="organization-flags/flags/unfilled-faculty-position.html#1._Organization_Unfilled_Faculty_Position_Option" class="internal-link" target="_self" rel="noopener">Unfilled Faculty Position Flag</a> enabled
+
+<br>
+If the current fund's <a data-tooltip-position="top" aria-label="Fund Type > Description" data-href="Fund Type#Description" href="fund/itemizables/fields/common-fields/operating-account-information/fund-type.html#Description" class="internal-link" target="_self" rel="noopener">Fund Type</a> string contains the word "Faculty"
+
+<br>
+if Fund's <a data-tooltip-position="top" aria-label="Start Date" data-href="Start Date" href="fund/itemizables/faculty/faculty-fields/start-date.html" class="internal-link" target="_self" rel="noopener">Faculty Appointment Start Date</a> it's null 
+
+<br><a data-href="#2. Found Unfilled Faculty Position Tag" href="about:blank#2._Found_Unfilled_Faculty_Position_Tag" class="internal-link" target="_self" rel="noopener">2. Found Unfilled Faculty Position Tag</a> Activated
+
+
+<br>
+if Current Date its newer than <a data-tooltip-position="top" aria-label="End Date" data-href="End Date" href="fund/itemizables/faculty/faculty-fields/end-date.html" class="internal-link" target="_self" rel="noopener">Fund's Faculty Appointment End Date</a> 
+
+<br><a data-href="#2. Found Unfilled Faculty Position Tag" href="about:blank#2._Found_Unfilled_Faculty_Position_Tag" class="internal-link" target="_self" rel="noopener">2. Found Unfilled Faculty Position Tag</a> Activated
+
+
+]]></description><link>organization-flags/flags/unfilled-faculty-position.html</link><guid isPermaLink="false">Organization Flags/Flags/Unfilled Faculty Position.md</guid><pubDate>Sun, 18 Aug 2024 17:36:23 GMT</pubDate><enclosure url="lib/media/pasted-image-20240813234031.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib/media/pasted-image-20240813234031.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Compliance Flags]]></title><description><![CDATA[ 
+ <br>Select all compliance flags that you want FundMiner to track based on your organization’s needs<br>
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+]]></description><link>organization-flags/compliance-flags.html</link><guid isPermaLink="false">Organization Flags/Compliance Flags.md</guid><pubDate>Mon, 19 Aug 2024 21:42:52 GMT</pubDate></item></channel></rss>
